@@ -18,4 +18,13 @@ object UserGenerator {
     }
 
     fun getUser(userId: Int) = userList.find { it.id == userId }
+
+    fun editUser(userId: Int, userName: String, userLastName: String, userNumber: String) {
+        val user = getUser(userId)
+        user?.let { user ->
+            user.firstName = userName
+            user.lastName = userLastName
+            user.number = userNumber
+        }
+    }
 }

@@ -1,10 +1,13 @@
 package com.example.usersfragments.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import com.example.usersfragments.R
 import com.example.usersfragments.data.UserGenerator.userList
 import com.example.usersfragments.databinding.FragmentUsersBinding
@@ -16,6 +19,7 @@ class UsersFragment : Fragment(R.layout.fragment_users) {
     private var _binding: FragmentUsersBinding? = null
     private val binding
         get() = _binding!!
+    private val adapter = UsersRecyclerViewAdapter { userId -> onClickUser(userId) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,7 +32,6 @@ class UsersFragment : Fragment(R.layout.fragment_users) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = UsersRecyclerViewAdapter { userId -> onClickUser(userId) }
         binding.recyclerview.adapter = adapter
 
         adapter.setData(userList)
@@ -41,6 +44,7 @@ class UsersFragment : Fragment(R.layout.fragment_users) {
             replace(R.id.fragment_container_view, fragment, UserDetailFragment.TAG)
             addToBackStack(UserDetailFragment.TAG)
             commit()
+            Log.d(TAG, "onClickUser: $userId")
         }
     }
 
