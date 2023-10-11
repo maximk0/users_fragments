@@ -2,21 +2,19 @@ package com.example.usersfragments.home
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import com.example.usersfragments.R
 import com.example.usersfragments.data.User
+import com.example.usersfragments.databinding.UserBinding
 
-import com.example.usersfragments.home.placeholder.PlaceholderContent.PlaceholderItem
-import com.example.usersfragments.databinding.FragmentItemBinding
 
-class UsersRecyclerViewAdapter : RecyclerView.Adapter<UsersRecyclerViewAdapter.ViewHolder>() {
+class UsersRecyclerViewAdapter(
+    private val onClickUser: (userId: Int) -> Unit,
+) : RecyclerView.Adapter<UsersRecyclerViewAdapter.ViewHolder>() {
 
     private var users: List<User> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        ViewHolder(FragmentItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        ViewHolder(UserBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -24,7 +22,10 @@ class UsersRecyclerViewAdapter : RecyclerView.Adapter<UsersRecyclerViewAdapter.V
         with(holder.binding) {
             firstName.text = item.firstName
             lastName.text = item.lastName
-            phoneNumber.text = item.number
+
+            root.setOnClickListener {
+                onClickUser(item.id)
+            }
         }
     }
 
@@ -35,6 +36,6 @@ class UsersRecyclerViewAdapter : RecyclerView.Adapter<UsersRecyclerViewAdapter.V
         notifyDataSetChanged()
     }
 
-    inner class ViewHolder(val binding: FragmentItemBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class ViewHolder(val binding: UserBinding) : RecyclerView.ViewHolder(binding.root)
 
 }

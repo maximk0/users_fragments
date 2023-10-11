@@ -1,17 +1,19 @@
 package com.example.usersfragments.home
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.usersfragments.data.User
-import com.example.usersfragments.databinding.FragmentItemListBinding
+import androidx.fragment.app.Fragment
+import com.example.usersfragments.R
+import com.example.usersfragments.data.UserGenerator.userList
+import com.example.usersfragments.databinding.FragmentUsersBinding
+import com.example.usersfragments.detail.UserDetailFragment
 
 
-class UsersFragment : Fragment() {
+class UsersFragment : Fragment(R.layout.fragment_users) {
 
-    private var _binding: FragmentItemListBinding? = null
+    private var _binding: FragmentUsersBinding? = null
     private val binding
         get() = _binding!!
 
@@ -19,29 +21,32 @@ class UsersFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentItemListBinding.inflate(inflater, container, false)
+        _binding = FragmentUsersBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = UsersRecyclerViewAdapter()
+        val adapter = UsersRecyclerViewAdapter { userId -> onClickUser(userId) }
         binding.recyclerview.adapter = adapter
 
-        adapter.setData(userList())
+        adapter.setData(userList)
     }
 
-    private fun userList(): List<User> {
-        val contacts = mutableListOf<User>()
-        for (i in 1..100) {
-            contacts.add(User(i, "Имя$i", "Фамилия$i", "8-800-$i$i"))
+    private fun onClickUser(userId: Int) {
+        parentFragmentManager.beginTransaction().run{
+            val fragment = UserDetailFragment.newInstance(userId)
+            setReorderingAllowed(true)
+            replace(R.id.fragment_container_view, fragment, UserDetailFragment.TAG)
+            addToBackStack(UserDetailFragment.TAG)
+            commit()
         }
-        return contacts
     }
 
     companion object {
         @JvmStatic
         fun newInstance() = UsersFragment()
+        const val TAG = "UsersFragment"
     }
 }
