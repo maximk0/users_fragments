@@ -1,5 +1,7 @@
 package com.example.usersfragments.data
 
+import android.util.Log
+
 object UserGenerator {
 
     var userList = listOf<User>()
@@ -19,12 +21,25 @@ object UserGenerator {
 
     fun getUser(userId: Int) = userList.find { it.id == userId }
 
-    fun editUser(userId: Int, userName: String, userLastName: String, userNumber: String) {
+    fun editUserName(userId: Int, userName: String) {
         val user = getUser(userId)
         user?.let { user ->
             user.firstName = userName
-            user.lastName = userLastName
-            user.number = userNumber
         }
+    }
+
+    fun editUserLastName(userId: Int, lastName: String) {
+        val user = getUser(userId)
+        user?.let { user ->
+            user.lastName = lastName
+        }
+    }
+
+    fun editUserNumber(userId: Int, number: String) {
+        val user = getUser(userId)
+        user?.let { user ->
+            user.number = number
+        }
+        Log.d("TAG", "USER_DETAIL edit: $user")
     }
 }

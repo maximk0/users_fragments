@@ -45,23 +45,23 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
         }
 
         binding.btnSave.setOnClickListener {
-            val newName = binding.etFirstName.text
-            val newLastName = binding.etLastName.text
-            val newPhone = binding.etPhoneNumber.text
+            val newName = binding.etFirstName.text.toString()
+            val newLastName = binding.etLastName.text.toString()
+            val newPhone = binding.etPhoneNumber.text.toString()
 
             setFragmentResult(ARG_SAVE_NAME, bundleOf(ARG_SAVE_NAME to newName))
             setFragmentResult(ARG_SAVE_LAST_NAME, bundleOf(ARG_SAVE_LAST_NAME to newLastName))
             setFragmentResult(ARG_SAVE_NUMBER, bundleOf(ARG_SAVE_NUMBER to newPhone))
 
             parentFragmentManager.beginTransaction().run{
-               parentFragmentManager.popBackStack(UserDetailFragment.TAG, 0)
+               parentFragmentManager.popBackStack()
             }
         }
     }
 
     companion object {
         @JvmStatic
-        fun newInstance() = UsersFragment()
+        fun newInstance() = EditFragment()
 
         const val TAG = "UserDetailFragment"
         const val ARG_USER_ID = "userId"
